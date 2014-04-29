@@ -1,0 +1,30 @@
+ByWAF
+=====
+
+Main functions
+-------------
+
++ gset
++ gshow
++ help
++ history
++ jobs
++ result
++ script
++ set
++ shell
++ show
++ use
+
+Plugins
+-------
+
+db
+...
+
++ showdb
++ puthost
+
+
+Guide
+

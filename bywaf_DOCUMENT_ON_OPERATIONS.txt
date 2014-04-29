@@ -1,0 +1,988 @@
+ByWAF
+=====
+
+Functions
+---------
+
+### Main ###
+
++ gset
++ gshow
++ help
++ history
++ jobs
++ result
++ script
++ set
++ shell
++ show
++ use
+
+### db ###
+
++ showdb
++ puthost
+
+
+Guide
+-----
+
+python2.7 -OOBRtt '/var/STOREX3/BINOMO/new_bywaf/bywaf.py'
+
+....____           _       __            ____
+.../ __ )   __  __| |     / /  ____ _   / __/
+../ __  |  / / / /| | /| / /  / __ `/  / /_  
+./ /_/ /  / /_/ / | |/ |/ /  / /_/ /  / __/  
+/_____/   \__, /  |__/|__/   \__,_/  /_/     
+         /____/                             
+
+Bywaf> 
+Bywaf> gshow
+Global Option        Value
+-------------------- --------------------
+HISTORY_FILENAME     /var/STOREX3/BINOMO/new_bywaf/bywaf-history.txt
+PLUGIN_PATH          /var/STOREX3/BINOMO/new_bywaf
+Bywaf> 
+Bywaf> gset PLUGIN_PATH=/new/path/to/plugin
+[Global] 'PLUGIN_PATH' => '/new/path/to/plugin'
+Bywaf> 
+Bywaf> history
+# start 2014-04-12T22:38:00.105651
+# start 2014-04-13T07:52:23.451374
+gshow
+gset PLUGIN_PATH=/new/path/to/plugin
+history
+Bywaf> 
+Bywaf> shell ls -la
+total 168
+drwxr-xr-x  3 user01 user01  4096 2014-04-13 10:21 .
+drwxr-xr-x  3 user01 user01  4096 2014-04-13 00:36 ..
+-rw-r--r--  1 user01 user01 31744 2014-04-13 00:43 bywaf.db
+-rwxr-xr-x  1 user01 user01  3676 2014-04-13 10:21 bywaf_guide.md
+-rw-r--r--  1 user01 user01   243 2014-04-13 09:52 bywaf-history.txt
+-rwxr-xr-x  1 user01 user01 34084 2014-04-13 00:11 bywaf.py
+-rw-r--r--  1 user01 user01   181 2014-04-12 15:09 bywaf.txt
+-rw-r--r--  1 user01 user01  1975 2014-04-12 17:46 db.py
+-rw-r--r--  1 user01 user01  1607 2014-04-12 15:09 dbtest.py
+-rw-r--r--  1 user01 user01 19946 2013-02-01 21:03 docopt.py
+-rw-r--r--  1 user01 user01  8796 2014-04-12 17:47 hostdb.py
+-rwxr-xr-x  1 user01 user01  2564 2014-04-13 00:27 mscan.py
+-rw-rw-r--  1 user01 user01 22311 2011-10-23 15:52 recordtype.py
+-rw-r--r--  1 user01 user01  1918 2014-04-12 17:03 scan.py
+drwxr-xr-x 13 user01 user01  4096 2014-04-11 14:51 sqlalchemy
+Bywaf> 
+Bywaf> show
+No plugin currently selected
+Bywaf> use db.py
+Loading path: '/var/STOREX3/BINOMO/new_bywaf/db.py'
+Bywaf/db> 
+Bywaf/db> show
+
+
+
+Option          Value           Default Value   Required        Description    
+--------------- --------------- --------------- --------------- ---------------
+
+
+
+Command              Description         
+-------------------- --------------------
+puthost              None                
+showdb               None                
+
+
+Bywaf/db> 
+Bywaf/db> showdb
+Table: 'Host'
+
+0 rows
+----------------------------------------
+Table: 'Port'
+
+0 rows
+----------------------------------------
+Bywaf/db> 
+Bywaf> 
+Bywaf/db> puthost 127.0.0.1 my.domain.com
+Bywaf/db> 
+Bywaf/db> showdb
+Table: 'Host'
+IP=u'127.0.0.1' Host=u'my.domain.com'
+
+1 rows
+----------------------------------------
+Table: 'Port'
+
+0 rows
+----------------------------------------
+Bywaf/db> 
+Bywaf> 
+
+NOW START SCAN WITH NORMAL SEQUENTIAL SCAN PLUGIN NAMED "scan.py"
+
+Bywaf/db> use scan
+Loading path: '/var/STOREX3/BINOMO/new_bywaf/scan'
+Bywaf/scan> 
+Bywaf/scan> show
+
+
+
+Option          Value           Default Value   Required        Description    
+--------------- --------------- --------------- --------------- ---------------
+
+
+
+Command              Description         
+-------------------- --------------------
+scan                 None                
+
+
+Bywaf/scan> 
+Bywaf/scan> scan 172.16.174.222 80
+Scanning port 80
+
+172.16.174.222
+Successful connection
+
+Bywaf/scan> 
+Bywaf/scan> use db
+Loading path: '/var/STOREX3/BINOMO/new_bywaf/db'
+Bywaf/db> 
+Bywaf/db> showdb
+Table: 'Host'
+IP=u'127.0.0.1' Host=u'my.domain.com'
+IP=u'172.16.174.222' Host=u''  <--------------------- THE SCANNED HOST IS ADDED TO THE DB
+
+2 rows
+----------------------------------------
+Table: 'Port'
+
+0 rows
+----------------------------------------
+Bywaf/db> 
+Bywaf/db> use mscan
+Loading path: '/var/STOREX3/BINOMO/new_bywaf/mscan'
+Bywaf/mscan> 
+Bywaf/mscan> show
+
+
+
+Option          Value           Default Value   Required        Description    
+--------------- --------------- --------------- --------------- ---------------
+
+
+
+Command              Description         
+-------------------- --------------------
+scan                 None                
+
+
+Bywaf/mscan> 
+
+NOW START SCAN WITH MULTIPROCESSING SCAN PLUGIN NAMED "mscan.py"
+
+Bywaf/mscan> scan 172.16.174.x 22
+2014-04-13 10:30:40.403350 | 172.16.174.0 | 22 | ERROR | '[Errno 101] Network is unreachable'
+2014-04-13 10:30:43.404905 | 172.16.174.1 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:43.408891 | 172.16.174.4 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:43.408957 | 172.16.174.3 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:43.409447 | 172.16.174.2 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:43.568309 | 172.16.174.5 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:46.576240 | 172.16.174.6 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:46.724255 | 172.16.174.7 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:46.892241 | 172.16.174.8 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:47.092234 | 172.16.174.9 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:47.292263 | 172.16.174.10 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:49.740241 | 172.16.174.11 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:49.896285 | 172.16.174.12 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:50.052241 | 172.16.174.13 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:50.256233 | 172.16.174.14 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:50.448238 | 172.16.174.15 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:52.904254 | 172.16.174.16 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:53.056243 | 172.16.174.17 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:53.204255 | 172.16.174.18 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:53.404239 | 172.16.174.19 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:53.604237 | 172.16.174.20 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:56.052758 | 172.16.174.21 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:56.212225 | 172.16.174.22 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:56.360270 | 172.16.174.23 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:56.552249 | 172.16.174.24 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:56.760236 | 172.16.174.25 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:59.200263 | 172.16.174.26 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:59.368242 | 172.16.174.27 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:59.516244 | 172.16.174.28 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:59.716251 | 172.16.174.29 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:30:59.908267 | 172.16.174.30 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:02.348246 | 172.16.174.31 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:02.516231 | 172.16.174.32 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:02.664311 | 172.16.174.33 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:02.864284 | 172.16.174.34 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:03.056300 | 172.16.174.35 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:05.496307 | 172.16.174.36 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:05.664308 | 172.16.174.37 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:05.824308 | 172.16.174.38 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:06.012286 | 172.16.174.39 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:06.204234 | 172.16.174.40 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:08.644267 | 172.16.174.41 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:08.828801 | 172.16.174.42 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:08.980292 | 172.16.174.43 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:09.160290 | 172.16.174.44 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:09.352303 | 172.16.174.45 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:11.792303 | 172.16.174.46 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:11.976287 | 172.16.174.47 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:12.132315 | 172.16.174.48 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:12.308263 | 172.16.174.49 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:12.500790 | 172.16.174.50 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:12.504548 | 172.16.174.54 | 22 | OPEN
+2014-04-13 10:31:14.940310 | 172.16.174.51 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:15.124288 | 172.16.174.52 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:15.324285 | 172.16.174.53 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:15.648242 | 172.16.174.55 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:15.832238 | 172.16.174.56 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:18.100243 | 172.16.174.57 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:18.288287 | 172.16.174.58 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:18.480288 | 172.16.174.59 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:18.832316 | 172.16.174.60 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:18.988793 | 172.16.174.61 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:18.992470 | 172.16.174.65 | 22 | OPEN
+2014-04-13 10:31:19.335515 | 172.16.174.67 | 22 | OPEN
+2014-04-13 10:31:21.272251 | 172.16.174.62 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:21.448299 | 172.16.174.63 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:22.148248 | 172.16.174.66 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:24.428320 | 172.16.174.69 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:24.608293 | 172.16.174.70 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:25.304798 | 172.16.174.71 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:27.584314 | 172.16.174.72 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:27.760289 | 172.16.174.73 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:28.468812 | 172.16.174.74 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:30.740312 | 172.16.174.75 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:30.916217 | 172.16.174.76 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:31.640243 | 172.16.174.77 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:33.904300 | 172.16.174.78 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:34.080285 | 172.16.174.79 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:34.808325 | 172.16.174.80 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:37.064303 | 172.16.174.81 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:37.236297 | 172.16.174.82 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:37.960260 | 172.16.174.83 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:39.632211 | 172.16.174.64 | 22 | ERROR | '[Errno 110] Connection timed out'
+2014-04-13 10:31:40.224239 | 172.16.174.84 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:40.396303 | 172.16.174.85 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:40.500216 | 172.16.174.68 | 22 | ERROR | '[Errno 110] Connection timed out'
+2014-04-13 10:31:41.120309 | 172.16.174.86 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:42.792309 | 172.16.174.87 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:43.384245 | 172.16.174.88 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:43.584754 | 172.16.174.89 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:43.784291 | 172.16.174.90 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:44.300242 | 172.16.174.91 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:45.964322 | 172.16.174.92 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:46.568304 | 172.16.174.93 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:46.748299 | 172.16.174.94 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:46.956311 | 172.16.174.95 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:47.472318 | 172.16.174.96 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:49.156298 | 172.16.174.97 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:49.748308 | 172.16.174.98 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:49.912306 | 172.16.174.99 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:50.112289 | 172.16.174.100 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:50.630501 | 172.16.174.101 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:52.596320 | 172.16.174.102 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:52.928294 | 172.16.174.103 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:53.096285 | 172.16.174.104 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:53.280297 | 172.16.174.105 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:53.804308 | 172.16.174.106 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:55.768313 | 172.16.174.107 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:56.092310 | 172.16.174.108 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:56.268294 | 172.16.174.109 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:56.452306 | 172.16.174.110 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:56.976324 | 172.16.174.111 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:58.932754 | 172.16.174.112 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:59.260304 | 172.16.174.113 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:59.432303 | 172.16.174.114 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:31:59.624288 | 172.16.174.115 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:00.148320 | 172.16.174.116 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:02.124309 | 172.16.174.117 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:02.432318 | 172.16.174.118 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:02.596242 | 172.16.174.119 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:02.788298 | 172.16.174.120 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:03.320230 | 172.16.174.121 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:05.296244 | 172.16.174.122 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:05.596284 | 172.16.174.123 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:05.764329 | 172.16.174.124 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:05.956803 | 172.16.174.125 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:06.488309 | 172.16.174.126 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:08.476323 | 172.16.174.127 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:08.768312 | 172.16.174.128 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:08.936609 | 172.16.174.129 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:09.120230 | 172.16.174.130 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:09.652304 | 172.16.174.131 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:11.644310 | 172.16.174.132 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:11.936330 | 172.16.174.133 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:12.100308 | 172.16.174.134 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:12.284290 | 172.16.174.135 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:12.828307 | 172.16.174.136 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:14.816386 | 172.16.174.137 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:15.100221 | 172.16.174.138 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:15.280262 | 172.16.174.139 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:15.448324 | 172.16.174.140 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:15.988307 | 172.16.174.141 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:17.980321 | 172.16.174.142 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:18.300492 | 172.16.174.143 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:18.476225 | 172.16.174.144 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:18.652263 | 172.16.174.145 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:19.208252 | 172.16.174.146 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:21.156249 | 172.16.174.147 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:21.472263 | 172.16.174.148 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:21.652234 | 172.16.174.149 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:21.820256 | 172.16.174.150 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:22.388249 | 172.16.174.151 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:24.328254 | 172.16.174.152 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:24.644244 | 172.16.174.153 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:24.828229 | 172.16.174.154 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:24.992260 | 172.16.174.155 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:25.552254 | 172.16.174.156 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:27.492264 | 172.16.174.157 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:27.808260 | 172.16.174.158 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:27.992248 | 172.16.174.159 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:28.160248 | 172.16.174.160 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:28.724249 | 172.16.174.161 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:30.656244 | 172.16.174.162 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:30.980264 | 172.16.174.163 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:31.156249 | 172.16.174.164 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:31.327259 | 172.16.174.165 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:31.908245 | 172.16.174.166 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:33.820267 | 172.16.174.167 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:34.140281 | 172.16.174.168 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:34.332226 | 172.16.174.169 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:34.496282 | 172.16.174.170 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:35.080292 | 172.16.174.171 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:36.992306 | 172.16.174.172 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:37.324304 | 172.16.174.173 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:37.516294 | 172.16.174.174 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:37.680310 | 172.16.174.175 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:38.264319 | 172.16.174.176 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:40.196312 | 172.16.174.177 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:40.496299 | 172.16.174.178 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:40.688203 | 172.16.174.179 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:40.856286 | 172.16.174.180 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:41.444239 | 172.16.174.181 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:43.360314 | 172.16.174.182 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:43.668236 | 172.16.174.183 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:43.852324 | 172.16.174.184 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:44.028260 | 172.16.174.185 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:44.612320 | 172.16.174.186 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:46.528313 | 172.16.174.187 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:46.868290 | 172.16.174.188 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:47.060298 | 172.16.174.189 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:47.244306 | 172.16.174.190 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:47.776265 | 172.16.174.191 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:49.692321 | 172.16.174.192 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:50.040322 | 172.16.174.193 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:50.224289 | 172.16.174.194 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:50.420235 | 172.16.174.195 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:50.952314 | 172.16.174.196 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:52.868239 | 172.16.174.197 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:53.220244 | 172.16.174.198 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:53.404280 | 172.16.174.199 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:53.752810 | 172.16.174.200 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:54.284325 | 172.16.174.201 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:56.044308 | 172.16.174.202 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:56.392382 | 172.16.174.203 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:56.584296 | 172.16.174.204 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:56.932316 | 172.16.174.205 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:57.461174 | 172.16.174.206 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:59.224307 | 172.16.174.207 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:59.564299 | 172.16.174.208 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:32:59.764270 | 172.16.174.209 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:00.108741 | 172.16.174.210 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:00.640298 | 172.16.174.211 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:02.404256 | 172.16.174.212 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:02.740310 | 172.16.174.213 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:02.948798 | 172.16.174.214 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:03.288243 | 172.16.174.215 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:03.812338 | 172.16.174.216 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:05.588316 | 172.16.174.217 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:05.916241 | 172.16.174.218 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:06.140305 | 172.16.174.219 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:06.476336 | 172.16.174.220 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:07.008750 | 172.16.174.221 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:09.080252 | 172.16.174.223 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:09.300236 | 172.16.174.224 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:09.648305 | 172.16.174.225 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:10.188327 | 172.16.174.226 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:12.244248 | 172.16.174.227 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:12.460308 | 172.16.174.228 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:12.632563 | 172.16.174.232 | 22 | ERROR | '[Errno 111] Connection refused'
+2014-04-13 10:33:12.820244 | 172.16.174.229 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:13.352314 | 172.16.174.230 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:15.408260 | 172.16.174.231 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:15.788301 | 172.16.174.233 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:15.996308 | 172.16.174.234 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:16.516250 | 172.16.174.235 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:18.584306 | 172.16.174.236 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:18.966492 | 172.16.174.237 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:19.164293 | 172.16.174.238 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:19.696264 | 172.16.174.239 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:21.760223 | 172.16.174.240 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:22.128219 | 172.16.174.241 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:22.336308 | 172.16.174.242 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:22.868310 | 172.16.174.243 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:24.924312 | 172.16.174.244 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:25.300231 | 172.16.174.245 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:25.504235 | 172.16.174.246 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:26.032236 | 172.16.174.247 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:26.744212 | 172.16.174.222 | 22 | ERROR | '[Errno 110] Connection timed out'
+hostdb.add(): got exception: IntegrityError('(IntegrityError) column hostip is not unique',);
+2014-04-13 10:33:28.100247 | 172.16.174.248 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:28.484303 | 172.16.174.249 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:28.672292 | 172.16.174.250 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:28.839914 | 172.16.174.255 | 22 | ERROR | '[Errno 101] Network is unreachable'
+2014-04-13 10:33:29.204275 | 172.16.174.251 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:29.836333 | 172.16.174.252 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:31.268306 | 172.16.174.253 | 22 | ERROR | '[Errno 113] No route to host'
+2014-04-13 10:33:31.668297 | 172.16.174.254 | 22 | ERROR | '[Errno 113] No route to host'
+Quitting normally
+Bywaf/mscan> 
+
+=====================================================================
+IMPORTANT
+=====================================================================
+THERE IS A PROBLEM IN THE LOGIC OF THE DB
+every time there is a response from a host that has been scanned before
+the database is not properly handlind the action and generates an error
+
+2014-04-13 10:33:26.744212 | 172.16.174.222 | 22 | ERROR | '[Errno 110] Connection timed out'
+hostdb.add(): got exception: IntegrityError('(IntegrityError) column hostip is not unique',);
+
+=====================================================================
+
+NOW WE CHECK IN THE DB IF WHAT WE HAVE SCANNED HAS BEEN ADDED
+
+Bywaf/mscan> use db
+Loading path: '/var/STOREX3/BINOMO/new_bywaf/db'
+Bywaf/db> 
+Bywaf/db> showdb
+Table: 'Host'
+IP=u'127.0.0.1' Host=u'my.domain.com'
+IP=u'172.16.174.222' Host=u''
+IP=u'172.16.174.0' Host=u''
+IP=u'172.16.174.1' Host=u''
+IP=u'172.16.174.5' Host=u''
+IP=u'172.16.174.4' Host=u''
+IP=u'172.16.174.2' Host=u''
+IP=u'172.16.174.3' Host=u''
+IP=u'172.16.174.6' Host=u''
+IP=u'172.16.174.7' Host=u''
+IP=u'172.16.174.8' Host=u''
+IP=u'172.16.174.9' Host=u''
+IP=u'172.16.174.10' Host=u''
+IP=u'172.16.174.11' Host=u''
+IP=u'172.16.174.12' Host=u''
+IP=u'172.16.174.13' Host=u''
+IP=u'172.16.174.14' Host=u''
+IP=u'172.16.174.15' Host=u''
+IP=u'172.16.174.16' Host=u''
+IP=u'172.16.174.17' Host=u''
+IP=u'172.16.174.18' Host=u''
+IP=u'172.16.174.19' Host=u''
+IP=u'172.16.174.20' Host=u''
+IP=u'172.16.174.21' Host=u''
+IP=u'172.16.174.22' Host=u''
+IP=u'172.16.174.23' Host=u''
+IP=u'172.16.174.24' Host=u''
+IP=u'172.16.174.25' Host=u''
+IP=u'172.16.174.26' Host=u''
+IP=u'172.16.174.27' Host=u''
+IP=u'172.16.174.28' Host=u''
+IP=u'172.16.174.29' Host=u''
+IP=u'172.16.174.30' Host=u''
+IP=u'172.16.174.31' Host=u''
+IP=u'172.16.174.32' Host=u''
+IP=u'172.16.174.33' Host=u''
+IP=u'172.16.174.34' Host=u''
+IP=u'172.16.174.35' Host=u''
+IP=u'172.16.174.36' Host=u''
+IP=u'172.16.174.37' Host=u''
+IP=u'172.16.174.38' Host=u''
+IP=u'172.16.174.39' Host=u''
+IP=u'172.16.174.40' Host=u''
+IP=u'172.16.174.41' Host=u''
+IP=u'172.16.174.42' Host=u''
+IP=u'172.16.174.43' Host=u''
+IP=u'172.16.174.44' Host=u''
+IP=u'172.16.174.45' Host=u''
+IP=u'172.16.174.46' Host=u''
+IP=u'172.16.174.47' Host=u''
+IP=u'172.16.174.48' Host=u''
+IP=u'172.16.174.49' Host=u''
+IP=u'172.16.174.50' Host=u''
+IP=u'172.16.174.54' Host=u''
+IP=u'172.16.174.51' Host=u''
+IP=u'172.16.174.52' Host=u''
+IP=u'172.16.174.53' Host=u''
+IP=u'172.16.174.55' Host=u''
+IP=u'172.16.174.56' Host=u''
+IP=u'172.16.174.57' Host=u''
+IP=u'172.16.174.58' Host=u''
+IP=u'172.16.174.59' Host=u''
+IP=u'172.16.174.60' Host=u''
+IP=u'172.16.174.61' Host=u''
+IP=u'172.16.174.65' Host=u''
+IP=u'172.16.174.67' Host=u''
+IP=u'172.16.174.62' Host=u''
+IP=u'172.16.174.63' Host=u''
+IP=u'172.16.174.66' Host=u''
+IP=u'172.16.174.69' Host=u''
+IP=u'172.16.174.70' Host=u''
+IP=u'172.16.174.71' Host=u''
+IP=u'172.16.174.72' Host=u''
+IP=u'172.16.174.73' Host=u''
+IP=u'172.16.174.74' Host=u''
+IP=u'172.16.174.75' Host=u''
+IP=u'172.16.174.76' Host=u''
+IP=u'172.16.174.77' Host=u''
+IP=u'172.16.174.78' Host=u''
+IP=u'172.16.174.79' Host=u''
+IP=u'172.16.174.80' Host=u''
+IP=u'172.16.174.81' Host=u''
+IP=u'172.16.174.82' Host=u''
+IP=u'172.16.174.83' Host=u''
+IP=u'172.16.174.64' Host=u''
+IP=u'172.16.174.84' Host=u''
+IP=u'172.16.174.85' Host=u''
+IP=u'172.16.174.68' Host=u''
+IP=u'172.16.174.86' Host=u''
+IP=u'172.16.174.87' Host=u''
+IP=u'172.16.174.88' Host=u''
+IP=u'172.16.174.89' Host=u''
+IP=u'172.16.174.90' Host=u''
+IP=u'172.16.174.91' Host=u''
+IP=u'172.16.174.92' Host=u''
+IP=u'172.16.174.93' Host=u''
+IP=u'172.16.174.94' Host=u''
+IP=u'172.16.174.95' Host=u''
+IP=u'172.16.174.96' Host=u''
+IP=u'172.16.174.97' Host=u''
+IP=u'172.16.174.98' Host=u''
+IP=u'172.16.174.99' Host=u''
+IP=u'172.16.174.100' Host=u''
+IP=u'172.16.174.101' Host=u''
+IP=u'172.16.174.102' Host=u''
+IP=u'172.16.174.103' Host=u''
+IP=u'172.16.174.104' Host=u''
+IP=u'172.16.174.105' Host=u''
+IP=u'172.16.174.106' Host=u''
+IP=u'172.16.174.107' Host=u''
+IP=u'172.16.174.108' Host=u''
+IP=u'172.16.174.109' Host=u''
+IP=u'172.16.174.110' Host=u''
+IP=u'172.16.174.111' Host=u''
+IP=u'172.16.174.112' Host=u''
+IP=u'172.16.174.113' Host=u''
+IP=u'172.16.174.114' Host=u''
+IP=u'172.16.174.115' Host=u''
+IP=u'172.16.174.116' Host=u''
+IP=u'172.16.174.117' Host=u''
+IP=u'172.16.174.118' Host=u''
+IP=u'172.16.174.119' Host=u''
+IP=u'172.16.174.120' Host=u''
+IP=u'172.16.174.121' Host=u''
+IP=u'172.16.174.122' Host=u''
+IP=u'172.16.174.123' Host=u''
+IP=u'172.16.174.124' Host=u''
+IP=u'172.16.174.125' Host=u''
+IP=u'172.16.174.126' Host=u''
+IP=u'172.16.174.127' Host=u''
+IP=u'172.16.174.128' Host=u''
+IP=u'172.16.174.129' Host=u''
+IP=u'172.16.174.130' Host=u''
+IP=u'172.16.174.131' Host=u''
+IP=u'172.16.174.132' Host=u''
+IP=u'172.16.174.133' Host=u''
+IP=u'172.16.174.134' Host=u''
+IP=u'172.16.174.135' Host=u''
+IP=u'172.16.174.136' Host=u''
+IP=u'172.16.174.137' Host=u''
+IP=u'172.16.174.138' Host=u''
+IP=u'172.16.174.139' Host=u''
+IP=u'172.16.174.140' Host=u''
+IP=u'172.16.174.141' Host=u''
+IP=u'172.16.174.142' Host=u''
+IP=u'172.16.174.143' Host=u''
+IP=u'172.16.174.144' Host=u''
+IP=u'172.16.174.145' Host=u''
+IP=u'172.16.174.146' Host=u''
+IP=u'172.16.174.147' Host=u''
+IP=u'172.16.174.148' Host=u''
+IP=u'172.16.174.149' Host=u''
+IP=u'172.16.174.150' Host=u''
+IP=u'172.16.174.151' Host=u''
+IP=u'172.16.174.152' Host=u''
+IP=u'172.16.174.153' Host=u''
+IP=u'172.16.174.154' Host=u''
+IP=u'172.16.174.155' Host=u''
+IP=u'172.16.174.156' Host=u''
+IP=u'172.16.174.157' Host=u''
+IP=u'172.16.174.158' Host=u''
+IP=u'172.16.174.159' Host=u''
+IP=u'172.16.174.160' Host=u''
+IP=u'172.16.174.161' Host=u''
+IP=u'172.16.174.162' Host=u''
+IP=u'172.16.174.163' Host=u''
+IP=u'172.16.174.164' Host=u''
+IP=u'172.16.174.165' Host=u''
+IP=u'172.16.174.166' Host=u''
+IP=u'172.16.174.167' Host=u''
+IP=u'172.16.174.168' Host=u''
+IP=u'172.16.174.169' Host=u''
+IP=u'172.16.174.170' Host=u''
+IP=u'172.16.174.171' Host=u''
+IP=u'172.16.174.172' Host=u''
+IP=u'172.16.174.173' Host=u''
+IP=u'172.16.174.174' Host=u''
+IP=u'172.16.174.175' Host=u''
+IP=u'172.16.174.176' Host=u''
+IP=u'172.16.174.177' Host=u''
+IP=u'172.16.174.178' Host=u''
+IP=u'172.16.174.179' Host=u''
+IP=u'172.16.174.180' Host=u''
+IP=u'172.16.174.181' Host=u''
+IP=u'172.16.174.182' Host=u''
+IP=u'172.16.174.183' Host=u''
+IP=u'172.16.174.184' Host=u''
+IP=u'172.16.174.185' Host=u''
+IP=u'172.16.174.186' Host=u''
+IP=u'172.16.174.187' Host=u''
+IP=u'172.16.174.188' Host=u''
+IP=u'172.16.174.189' Host=u''
+IP=u'172.16.174.190' Host=u''
+IP=u'172.16.174.191' Host=u''
+IP=u'172.16.174.192' Host=u''
+IP=u'172.16.174.193' Host=u''
+IP=u'172.16.174.194' Host=u''
+IP=u'172.16.174.195' Host=u''
+IP=u'172.16.174.196' Host=u''
+IP=u'172.16.174.197' Host=u''
+IP=u'172.16.174.198' Host=u''
+IP=u'172.16.174.199' Host=u''
+IP=u'172.16.174.200' Host=u''
+IP=u'172.16.174.201' Host=u''
+IP=u'172.16.174.202' Host=u''
+IP=u'172.16.174.203' Host=u''
+IP=u'172.16.174.204' Host=u''
+IP=u'172.16.174.205' Host=u''
+IP=u'172.16.174.206' Host=u''
+IP=u'172.16.174.207' Host=u''
+IP=u'172.16.174.208' Host=u''
+IP=u'172.16.174.209' Host=u''
+IP=u'172.16.174.210' Host=u''
+IP=u'172.16.174.211' Host=u''
+IP=u'172.16.174.212' Host=u''
+IP=u'172.16.174.213' Host=u''
+IP=u'172.16.174.214' Host=u''
+IP=u'172.16.174.215' Host=u''
+IP=u'172.16.174.216' Host=u''
+IP=u'172.16.174.217' Host=u''
+IP=u'172.16.174.218' Host=u''
+IP=u'172.16.174.219' Host=u''
+IP=u'172.16.174.220' Host=u''
+IP=u'172.16.174.221' Host=u''
+IP=u'172.16.174.223' Host=u''
+IP=u'172.16.174.224' Host=u''
+IP=u'172.16.174.225' Host=u''
+IP=u'172.16.174.226' Host=u''
+IP=u'172.16.174.227' Host=u''
+IP=u'172.16.174.228' Host=u''
+IP=u'172.16.174.232' Host=u''
+IP=u'172.16.174.229' Host=u''
+IP=u'172.16.174.230' Host=u''
+IP=u'172.16.174.231' Host=u''
+IP=u'172.16.174.233' Host=u''
+IP=u'172.16.174.234' Host=u''
+IP=u'172.16.174.235' Host=u''
+IP=u'172.16.174.236' Host=u''
+IP=u'172.16.174.237' Host=u''
+IP=u'172.16.174.238' Host=u''
+IP=u'172.16.174.239' Host=u''
+IP=u'172.16.174.240' Host=u''
+IP=u'172.16.174.241' Host=u''
+IP=u'172.16.174.242' Host=u''
+IP=u'172.16.174.243' Host=u''
+IP=u'172.16.174.244' Host=u''
+IP=u'172.16.174.245' Host=u''
+IP=u'172.16.174.246' Host=u''
+IP=u'172.16.174.247' Host=u''
+IP=u'172.16.174.248' Host=u''
+IP=u'172.16.174.249' Host=u''
+IP=u'172.16.174.250' Host=u''
+IP=u'172.16.174.255' Host=u''
+IP=u'172.16.174.251' Host=u''
+IP=u'172.16.174.252' Host=u''
+IP=u'172.16.174.253' Host=u''
+IP=u'172.16.174.254' Host=u''
+
+257 rows
+----------------------------------------
+Table: 'Port'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.0'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.1'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.5'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.4'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.2'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.3'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.6'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.7'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.8'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.9'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.10'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.11'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.12'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.13'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.14'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.15'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.16'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.17'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.18'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.19'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.20'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.21'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.22'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.23'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.24'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.25'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.26'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.27'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.28'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.29'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.30'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.31'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.32'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.33'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.34'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.35'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.36'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.37'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.38'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.39'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.40'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.41'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.42'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.43'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.44'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.45'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.46'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.47'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.48'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.49'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.50'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'open' | Hostid=u'172.16.174.54'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.51'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.52'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.53'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.55'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.56'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.57'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.58'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.59'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.60'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.61'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'open' | Hostid=u'172.16.174.65'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'open' | Hostid=u'172.16.174.67'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.62'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.63'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.66'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.69'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.70'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.71'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.72'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.73'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.74'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.75'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.76'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.77'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.78'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.79'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.80'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.81'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.82'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.83'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.64'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.84'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.85'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.68'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.86'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.87'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.88'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.89'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.90'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.91'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.92'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.93'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.94'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.95'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.96'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.97'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.98'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.99'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.100'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.101'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.102'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.103'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.104'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.105'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.106'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.107'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.108'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.109'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.110'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.111'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.112'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.113'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.114'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.115'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.116'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.117'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.118'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.119'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.120'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.121'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.122'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.123'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.124'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.125'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.126'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.127'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.128'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.129'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.130'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.131'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.132'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.133'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.134'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.135'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.136'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.137'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.138'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.139'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.140'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.141'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.142'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.143'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.144'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.145'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.146'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.147'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.148'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.149'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.150'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.151'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.152'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.153'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.154'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.155'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.156'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.157'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.158'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.159'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.160'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.161'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.162'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.163'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.164'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.165'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.166'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.167'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.168'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.169'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.170'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.171'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.172'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.173'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.174'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.175'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.176'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.177'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.178'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.179'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.180'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.181'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.182'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.183'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.184'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.185'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.186'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.187'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.188'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.189'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.190'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.191'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.192'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.193'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.194'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.195'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.196'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.197'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.198'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.199'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.200'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.201'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.202'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.203'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.204'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.205'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.206'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.207'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.208'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.209'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.210'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.211'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.212'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.213'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.214'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.215'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.216'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.217'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.218'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.219'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.220'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.221'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.223'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.224'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.225'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.226'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.227'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.228'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.232'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.229'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.230'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.231'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.233'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.234'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.235'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.236'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.237'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.238'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.239'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.240'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.241'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.242'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.243'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.244'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.245'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.246'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.247'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.222'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.248'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.249'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.250'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.255'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.251'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.252'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.253'
+Protocol=u'TCP' | Port=22 | Service=None | State=None | Status=u'str(ex)' | Hostid=u'172.16.174.254'
+
+256 rows
+----------------------------------------
+Bywaf/db> 
+Bywaf/db> exit
+Goodbye
+closing pool...
+
